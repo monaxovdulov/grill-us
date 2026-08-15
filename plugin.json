@@ -1,0 +1,21 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "grill-us",
+  "version": "0.2.0",
+  "description": "Run attributed product interviews for pairs and small groups while preserving speaker provenance, decision ownership, and open disagreement.",
+  "author": {
+    "name": "Monaxovdulov",
+    "url": "https://github.com/monaxovdulov"
+  },
+  "homepage": "https://github.com/monaxovdulov/grill-us",
+  "repository": "https://github.com/monaxovdulov/grill-us",
+  "license": "LicenseRef-MIT-Style-Beer-Clause",
+  "keywords": [
+    "agent-plugins",
+    "agent-skill",
+    "product-discovery",
+    "speaker-provenance",
+    "decision-making",
+    "multi-user"
+  ]
+}

@@ -16,5 +16,5 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - name: Validate skill and documentation
+      - name: Validate Agent Plugin and documentation
         run: python scripts/validate.py

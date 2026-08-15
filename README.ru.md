@@ -11,6 +11,7 @@
 Grill Us помогает нескольким людям понять, что и зачем они собираются делать. Агент отслеживает, кто что наблюдал, кто за что отвечает, в чём участники расходятся и какие данные помогут принять следующее решение.
 
 [![Установить через skills.sh](https://img.shields.io/badge/skills.sh-install-111111?style=flat-square)](#установка)
+[![Agent Plugins 1.0.0](https://img.shields.io/badge/Agent_Plugins-1.0.0-6f42c1?style=flat-square)](https://agent-plugins.org/)
 [![Проверка](https://img.shields.io/github/actions/workflow/status/monaxovdulov/grill-us/validate.yml?branch=main&style=flat-square&label=validate)](https://github.com/monaxovdulov/grill-us/actions/workflows/validate.yml)
 [![MIT-style + Beer Clause](https://img.shields.io/badge/license-MIT--style%20%2B%20Beer%20Clause-2f6feb?style=flat-square)](LICENSE.md)
 
@@ -27,6 +28,8 @@ npx skills add monaxovdulov/grill-us --skill grill-us
 ```
 
 Либо скопируйте папку [`skills/grill-us`](skills/grill-us) в каталог скиллов вашего агента.
+
+Корень репозитория также оформлен как пакет [Agent Plugins 1.0.0](https://agent-plugins.org/specification). Клиент с поддержкой скиллов прочитает [`plugin.json`](plugin.json) и найдёт тот же скилл в `skills/`. Grill Us не поставляет MCP-сервер, поэтому файла `mcp.json` здесь нет. Единственный workflow пакета описан в `skills/grill-us/SKILL.md`.
 
 ## Начало сессии
 

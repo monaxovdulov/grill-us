@@ -3,6 +3,7 @@
 
 from __future__ import annotations
 
+import json
 import re
 import sys
 from pathlib import Path
@@ -11,11 +12,14 @@ from urllib.parse import unquote
 
 ROOT = Path(__file__).resolve().parents[1]
 SKILL = ROOT / "skills" / "grill-us" / "SKILL.md"
+PLUGIN = ROOT / "plugin.json"
+PLUGIN_SCHEMA = "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json"
 
 REQUIRED = (
     "README.md",
     "README.ru.md",
     "LICENSE.md",
+    "plugin.json",
     "THIRD_PARTY_NOTICES.md",
     "skills/grill-us/SKILL.md",
     "skills/grill-us/agents/openai.yaml",
@@ -39,6 +43,99 @@ def check_required_files() -> None:
     missing = [path for path in REQUIRED if not (ROOT / path).is_file()]
     if missing:
         fail("missing required files: " + ", ".join(missing))
+
+
+def check_plugin_manifest() -> None:
+    try:
+        manifest = json.loads(PLUGIN.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as error:
+        fail(f"plugin.json is not valid JSON: {error}")
+
+    if not isinstance(manifest, dict):
+        fail("plugin.json must contain a top-level object")
+
+    allowed = {
+        "$schema",
+        "name",
+        "version",
+        "description",
+        "author",
+        "homepage",
+        "repository",
+        "license",
+        "keywords",
+        "extensions",
+    }
+    unknown = sorted(set(manifest) - allowed)
+    if unknown:
+        fail("plugin.json contains unknown fields: " + ", ".join(unknown))
+
+    if manifest.get("$schema") != PLUGIN_SCHEMA:
+        fail("plugin.json must target Agent Plugins 1.0.0")
+
+    name = manifest.get("name")
+    if not isinstance(name, str) or not re.fullmatch(
+        r"(?!.*(?:--|\.\.))[a-z0-9](?:[a-z0-9.-]{0,62}[a-z0-9])?", name
+    ):
+        fail("plugin name violates Agent Plugins 1.0.0 naming constraints")
+    if name != "grill-us":
+        fail("plugin name must be grill-us")
+
+    string_fields = ("version", "description", "homepage", "repository", "license")
+    for field in string_fields:
+        if field in manifest and not isinstance(manifest[field], str):
+            fail(f"plugin.json field {field!r} must be a string")
+
+    author = manifest.get("author")
+    if author is not None:
+        if not isinstance(author, dict):
+            fail("plugin.json author must be an object")
+        author_unknown = sorted(set(author) - {"name", "email", "url"})
+        if author_unknown:
+            fail("plugin.json author contains unknown fields: " + ", ".join(author_unknown))
+        if not all(isinstance(value, str) for value in author.values()):
+            fail("plugin.json author values must be strings")
+
+    keywords = manifest.get("keywords")
+    if keywords is not None and (
+        not isinstance(keywords, list)
+        or not all(isinstance(keyword, str) for keyword in keywords)
+    ):
+        fail("plugin.json keywords must be an array of strings")
+
+    extensions = manifest.get("extensions")
+    if extensions is not None and (
+        not isinstance(extensions, dict)
+        or not all(isinstance(value, dict) for value in extensions.values())
+    ):
+        fail("plugin.json extensions must map namespaces to objects")
+
+    changelog = (ROOT / "CHANGELOG.md").read_text(encoding="utf-8")
+    release = re.search(r"^## (\d+\.\d+\.\d+)\b", changelog, flags=re.MULTILINE)
+    if not release or manifest.get("version") != release.group(1):
+        fail("plugin version must match the current changelog release")
+
+    skills_root = ROOT / "skills"
+    discovered = [
+        child
+        for child in skills_root.iterdir()
+        if child.is_dir() and (child / "SKILL.md").is_file()
+    ]
+    if SKILL.parent not in discovered:
+        fail("Agent Plugins discovery cannot find skills/grill-us/SKILL.md")
+
+    mcp_path = ROOT / "mcp.json"
+    if mcp_path.exists():
+        try:
+            mcp = json.loads(mcp_path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError as error:
+            fail(f"mcp.json is not valid JSON: {error}")
+        if not isinstance(mcp, dict) or set(mcp) != {"$schema", "mcpServers"}:
+            fail("mcp.json must contain only $schema and mcpServers")
+        if mcp["$schema"] != "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json":
+            fail("mcp.json must target the same Agent Plugins version as plugin.json")
+        if not isinstance(mcp["mcpServers"], dict):
+            fail("mcp.json mcpServers must be an object")
 
 
 def check_skill() -> None:
@@ -126,6 +223,7 @@ def check_placeholders() -> None:
 
 def main() -> None:
     check_required_files()
+    check_plugin_manifest()
     check_skill()
     check_markdown_links()
     check_bilingual_contract()

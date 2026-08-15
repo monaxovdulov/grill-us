@@ -1,12 +1,10 @@
 <p align="center">
-  <img src="assets/hero.png" alt="Grill Us — an attributed product interview for several humans" width="100%" />
+  <img src="assets/hero.webp" alt="Grill Us — an attributed product interview for several humans" width="100%" />
 </p>
 
 <p align="center">
   <strong>English</strong> · <a href="README.ru.md">Русский</a>
 </p>
-
-# Grill Us
 
 An attributed product interview for pairs and small groups.
 
@@ -16,11 +14,11 @@ Grill Us helps several people work out what to build and why. The agent keeps tr
 [![Validate](https://img.shields.io/github/actions/workflow/status/monaxovdulov/grill-us/validate.yml?branch=main&style=flat-square&label=validate)](https://github.com/monaxovdulov/grill-us/actions/workflows/validate.yml)
 [![MIT-style + Beer Clause](https://img.shields.io/badge/license-MIT--style%20%2B%20Beer%20Clause-2f6feb?style=flat-square)](LICENSE.md)
 
-## Why it exists
+## How it works
 
-Most interview skills receive one undifferentiated user voice. In a real product conversation, the domain expert may know the problem, the builder may know the constraints, and both may use “we” before they have actually agreed.
+In a product conversation, the domain expert may know the problem, the builder may know the constraints, and both may use “we” before they have actually agreed.
 
-Grill Us maintains speaker provenance and decision ownership throughout the interview. It supports two people at one terminal and natural group conversation in a harness that supplies stable sender identity.
+Grill Us treats each participant as a separate source. It maintains speaker provenance and decision ownership throughout the interview, whether two people share one terminal or a messaging harness supplies stable sender identity.
 
 ## Install
 

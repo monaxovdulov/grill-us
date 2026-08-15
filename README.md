@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/hero.svg" alt="Grill Us — an attributed product interview for several humans" width="100%" />
+  <img src="assets/hero.png" alt="Grill Us — an attributed product interview for several humans" width="100%" />
 </p>
 
 <p align="center">

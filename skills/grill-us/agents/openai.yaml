@@ -1,0 +1,4 @@
+interface:
+  display_name: "Grill Us"
+  short_description: "Multi-human product grilling"
+  default_prompt: "Use $grill-us to help us stress-test this product idea as a group."

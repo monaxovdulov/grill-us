@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Русская документация
+    url: https://github.com/monaxovdulov/grill-us/blob/main/README.ru.md
+    about: Начните с русской версии README.

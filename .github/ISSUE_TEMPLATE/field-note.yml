@@ -1,0 +1,58 @@
+name: Field note
+description: Report what happened in a real Grill Us session
+title: "[field note] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for testing Grill Us. Redact names, company details, and private product information.
+
+  - type: input
+    id: setup
+    attributes:
+      label: Setup
+      description: Participant count and roles, agent, model, and harness.
+      placeholder: "2 participants: domain expert + builder; Hermes in a Telegram topic"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: mode
+    attributes:
+      label: Conversation mode
+      options:
+        - Turn mode — shared account or device
+        - Room mode — stable sender identity
+    validations:
+      required: true
+
+  - type: textarea
+    id: event
+    attributes:
+      label: What happened?
+      description: Describe the moment where attribution, routing, disagreement handling, or confirmation mattered.
+    validations:
+      required: true
+
+  - type: textarea
+    id: excerpt
+    attributes:
+      label: Redacted excerpt
+      description: Include the smallest excerpt that demonstrates the behavior.
+      render: text
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What should the protocol have done?
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy check
+      options:
+        - label: I removed private and identifying information.
+          required: true

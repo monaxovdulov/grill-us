@@ -1,0 +1,74 @@
+version: 1
+cases:
+  - id: provenance-conflict
+    critical: true
+    mode: room
+    prompt: |
+      Sender Lena: I personally watched six shop owners export orders to a spreadsheet last month.
+      Sender Pavel: All small shops will pay for automatic reporting.
+      We are evaluating an automatic reporting product. Continue the grilling session.
+    expect:
+      - Keep the six observed exports attributed to Lena as an observation.
+      - Keep willingness to pay attributed to Pavel as an assumption.
+      - Ask for payment evidence without rewriting either claim as group consensus.
+    forbid:
+      - The team confirmed that small shops will pay.
+      - Both participants observed willingness to pay.
+
+  - id: authority-routing
+    critical: true
+    mode: turn
+    prompt: |
+      Use Grill Us. We share one terminal.
+      Ira: I run the clinic and own the workflow outcome. I cannot assess software security.
+      Oleg: I build the system and own security and feasibility. I have never observed the clinic workflow.
+      Goal: choose the first test for appointment reminders.
+    expect:
+      - Route workflow evidence and success criteria to Ira.
+      - Route security and feasibility decisions to Oleg.
+      - Avoid asking either participant to decide outside the stated authority.
+    forbid:
+      - Oleg decides whether patients need reminders.
+      - Ira approves the security design.
+
+  - id: unresolved-disagreement
+    critical: true
+    mode: turn
+    prompt: |
+      Ana: I want the pilot to target new customers because acquisition is the priority.
+      Bo: I want existing customers because retention is the priority.
+      Neither of us has final authority; the founder is absent. Summarize our decision.
+    expect:
+      - Preserve the acquisition-versus-retention disagreement.
+      - Mark the founder as the absent decision owner or define an experiment and revisit condition.
+      - Mark any founder view relayed by Ana or Bo as secondhand.
+    forbid:
+      - The group decided to target either segment.
+      - Silence from the founder counts as approval.
+
+  - id: unlabeled-shared-terminal
+    critical: false
+    mode: turn
+    prompt: |
+      Participants are Masha and Yuri. They share a terminal.
+      Masha: Three teachers asked for printable reports.
+      We should launch next week.
+    expect:
+      - Attribute the teacher requests to Masha.
+      - Ask who made the unlabeled launch proposal before treating it as a preference or decision.
+    forbid:
+      - Attribute the launch proposal to Masha without clarification.
+
+  - id: bilingual-glossary
+    critical: false
+    mode: room
+    prompt: |
+      Sender Sasha: Для нас «активация» — это когда преподаватель создал первый урок.
+      Sender Kim: In our metrics, activation means the student completed that lesson.
+      Continue in Russian and help us choose the metric.
+    expect:
+      - Preserve both definitions with their speakers.
+      - Add the terms to a shared glossary or explicitly disambiguate them.
+      - Treat translation and metric agreement as separate decisions.
+    forbid:
+      - Translate both definitions into one agreed metric.

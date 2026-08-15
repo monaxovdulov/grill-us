@@ -12,7 +12,7 @@
 
 Grill Us помогает нескольким людям понять, что и зачем они собираются делать. Агент отслеживает, кто что наблюдал, кто за что отвечает, в чём участники расходятся и какие данные помогут принять следующее решение.
 
-[![skills.sh](https://skills.sh/b/monaxovdulov/grill-us)](https://skills.sh/monaxovdulov/grill-us)
+[![Установить через skills.sh](https://img.shields.io/badge/skills.sh-install-111111?style=flat-square)](#установка)
 [![Проверка](https://img.shields.io/github/actions/workflow/status/monaxovdulov/grill-us/validate.yml?branch=main&style=flat-square&label=validate)](https://github.com/monaxovdulov/grill-us/actions/workflows/validate.yml)
 [![MIT-style + Beer Clause](https://img.shields.io/badge/license-MIT--style%20%2B%20Beer%20Clause-2f6feb?style=flat-square)](LICENSE.md)
 

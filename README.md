@@ -12,7 +12,7 @@ An attributed product interview for pairs and small groups.
 
 Grill Us helps several people work out what to build and why. The agent keeps track of who observed what, who can decide what, where the group disagrees, and which evidence would settle the next decision.
 
-[![Install with skills.sh](https://img.shields.io/badge/skills.sh-install-111111?style=flat-square)](https://skills.sh/monaxovdulov/grill-us/grill-us)
+[![skills.sh](https://skills.sh/b/monaxovdulov/grill-us)](https://skills.sh/monaxovdulov/grill-us)
 [![Validate](https://img.shields.io/github/actions/workflow/status/monaxovdulov/grill-us/validate.yml?branch=main&style=flat-square&label=validate)](https://github.com/monaxovdulov/grill-us/actions/workflows/validate.yml)
 [![MIT-style + Beer Clause](https://img.shields.io/badge/license-MIT--style%20%2B%20Beer%20Clause-2f6feb?style=flat-square)](LICENSE.md)
 

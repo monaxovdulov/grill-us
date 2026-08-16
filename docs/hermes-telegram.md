@@ -59,6 +59,8 @@ For a forum topic, use its topic ID as the `channel_prompts` key. Topic prompts 
 
 With observation enabled, ordinary allowlisted messages enter the shared transcript without triggering a reply. A later mention or reply to the bot can use that context. Hermes tags the triggering message with the sender nickname and user ID.
 
+For an agent-facing instruction that turns this host behavior into an attributed checkpoint workflow, apply the [Quiet Record recipe](../recipes/quiet-record.md). Hermes remains responsible for transcript and memory policy.
+
 ## 5. Start the room
 
 Mention the bot once:
@@ -72,7 +74,7 @@ Our goal is to decide whether a parent progress digest is worth testing.
 ```
 
 Participants can then answer in any order. Mention or reply to the bot when you want the next round or an updated decision record.
-The first direct reply should report `Grill Us v0.5.0 · Grill · Room` and the room language; a different version indicates a stale installed copy.
+The first direct reply should report `Grill Us v0.6.0 · Grill · Room` and the room language; a different version indicates a stale installed copy.
 
 ## 6. Verify attribution before a real session
 

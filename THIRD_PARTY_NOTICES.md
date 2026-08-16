@@ -23,6 +23,10 @@ The 0.5.0 authoring and eval pass consulted these public projects:
 
 Grill Us does not bundle their style corpora, scripts, or output-style definitions.
 
+## Matt Pocock — `domain-modeling`
+
+The optional Shared Language recipe composes Grill Us with Matt Pocock's [`domain-modeling`](https://github.com/mattpocock/skills/tree/main/skills/engineering/domain-modeling) skill. The recipe keeps Grill Us in control of multi-participant pacing, provenance, authority, and intervention while `domain-modeling` supplies terminology checks and `CONTEXT.md` formatting. It explicitly does not load Matt Pocock's single-user `grilling` skill.
+
 ## Other public uses of pair grilling
 
 - Kimura Kei described a local `/grill-us` skill for Jira refinement with two or three developers in [「要件定義の手戻りをAIで防ぐ」](https://zenn.dev/kimuchan/articles/bc8e98682f8594).

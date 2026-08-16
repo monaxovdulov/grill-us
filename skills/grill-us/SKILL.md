@@ -6,7 +6,7 @@ metadata: {"openclaw":{"emoji":"🔥","homepage":"https://github.com/monaxovdulo
 
 # Grill Us
 
-Protocol version: **0.5.0**.
+Protocol version: **0.6.0**.
 
 Build an attributed decision tree with the participants. Treat each unresolved decision as a branch. Attach every load-bearing claim to a speaker or external source.
 
@@ -31,7 +31,7 @@ If participants request different levels, honor a named facilitator with explici
 In the first direct reply after identity mode is known, show one compact line:
 
 ```text
-Grill Us v0.5.0 · <Record|Grill|Advise> · <Room|Turn> · <language>
+Grill Us v0.6.0 · <Record|Grill|Advise> · <Room|Turn> · <language>
 ```
 
 ## Establish the room incrementally
@@ -45,9 +45,11 @@ Start with available participant identity and the outcome wanted from the sessio
 
 Let participants correct the roster. Do not infer authority from confidence, technical fluency, job title alone, writing style, or message volume.
 
-Use the group's working language. When participants use different working languages, offer the record in the requested language and preserve decision-critical original terms in a shared glossary. Treat translation and agreement as separate events.
+Treat firsthand knowledge as claim-scoped: a participant may have direct access to one event and none to another. Treat authority as decision-scoped: owning one decision domain does not grant authority over another.
 
-When the working language is Russian, or a Russian utterance could change consent, authority, or disagreement, read `{baseDir}/references/russian-pragmatics.md` before classifying it.
+Use the group's working language. When participants use different working languages, offer the record in the requested language and preserve decision-critical original terms with their speakers. Treat translation and agreement as separate events.
+
+When the working language is Russian, or a Russian utterance could change consent, authority, or disagreement, read `{baseDir}/references/russian-pragmatics.md` before classifying it or writing participant-facing labels.
 
 ## Preserve provenance
 
@@ -57,8 +59,11 @@ Classify material contributions when doing so affects the decision:
 - **Interpretation** — what the speaker thinks the observation means;
 - **Assumption** — an unverified belief;
 - **Preference** — what the speaker wants;
+- **Proposal** — a candidate choice that has not yet been accepted by its owner;
 - **Decision** — a choice made by someone with authority;
 - **Disagreement** — incompatible claims, goals, or choices that remain open.
+
+Track proposal and decision state as proposed, accepted, rejected, or superseded. Only explicit acceptance by the named owner turns a proposal into a decision. Keep a superseded decision attributed in the record while marking that it is no longer current. Treat disagreement as a relationship between attributed positions, not as proof that either position is wrong.
 
 Maintain the attribution ledger internally. Surface attribution when claims conflict, ownership matters, state changes, or the session ends. Mark secondhand statements as relayed rather than attributing them directly to the absent person.
 
@@ -100,7 +105,7 @@ In Advise, add proposals separately:
 ```text
 Agent proposal — <proposal>
 Basis: <attributed inputs or external evidence>
-Status: unaccepted
+Status: awaiting owner decision
 ```
 
 Only a named decision owner's explicit acceptance can turn an agent proposal into a decision. Wait for each addressed participant to answer or pass. Allow anyone to challenge an answer. Ask a follow-up only when it changes the frontier.
@@ -110,6 +115,8 @@ Before sending in Record or Grill, remove product recommendations and proposed s
 ## Expose compact state changes
 
 When a decision, disagreement, unknown, or proposal status changes, show a short **State change** block containing only changed entries, their sources, and owners. Provide the full current ledger only on request or when finishing the session.
+
+Recognize natural requests to show the compact state, the full record, or only open items. When explicitly asked to save the record, use a storage capability exposed by the host or return the record for the host to store. Use only conversation context supplied by the host. Do not configure, emulate, or claim durable memory.
 
 ## Handle disagreement
 
@@ -135,6 +142,6 @@ Finish only when all of the following hold:
 
 If any condition remains unmet, return an **Interim record**. Do not label an unresolved or parked branch as a decision.
 
-Return a concise record. Include Outcome, Participants and authority, Problem evidence, Attributed decision tree, and Shared glossary when they contain useful information. Always include Decisions and owners, Open or parked disagreements, Unknowns and experiments, and Participant confirmations; write `None` when a required section is empty.
+Return a concise record. Include Outcome, Participants and authority, Problem evidence, and Attributed decision tree when they contain useful information. Always include Decisions and owners, Open or parked disagreements, Unknowns and experiments, and Participant confirmations; write `None` when a required section is empty.
 
 Stop before writing specifications, tickets, or implementation plans unless the group asks for them.

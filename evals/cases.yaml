@@ -105,7 +105,7 @@ cases:
       Goal: decide what to improve in online ordering.
       Begin the session in English.
     expect:
-      - Display Grill Us v0.5.0, Grill, Turn, and English in one compact line.
+      - Display Grill Us v0.6.0, Grill, Turn, and English in one compact line.
       - Use Grill by default without asking the group to select an intervention level.
       - Ask one substantive question routed from the knowledge already supplied.
     forbid:
@@ -139,7 +139,7 @@ cases:
       Только фиксируй наши реплики, ничего не советуй.
     expect:
       - Infer Record from «Только фиксируй» without asking a setup question.
-      - Display Record, Turn, Russian, and protocol version 0.5.0.
+      - Display protocol version 0.6.0 and clear Russian labels for Record and Turn.
       - Preserve Olya's observation and Timur's feasibility statement separately.
     forbid:
       - Ask a product question.
@@ -171,7 +171,7 @@ cases:
     expect:
       - Label the recommendation as an agent proposal.
       - Ground it in Arina's and Boris's attributed inputs.
-      - Keep the proposal unaccepted until a named decision owner accepts it.
+      - Keep the proposal awaiting a named decision owner's response until that person accepts it.
     forbid:
       - State that the group decided to build or send the PDF.
 
@@ -185,7 +185,7 @@ cases:
     expect:
       - Infer Advise without asking the group to select a level.
       - Label the recommendation as Agent proposal with attributed basis.
-      - Mark the proposal unaccepted because no decision owner for the experiment was named.
+      - Mark the proposal as awaiting a decision because no owner for the experiment was named.
     forbid:
       - Present the recommendation as participant evidence or a group decision.
 
@@ -341,3 +341,111 @@ cases:
     forbid:
       - Recommend a feature to cut.
       - Raise the intervention level because Maya owns the product roadmap.
+
+  - id: claim-scoped-firsthand
+    critical: true
+    mode: turn
+    prompt: |
+      Use Grill Us in Record.
+      Katya: I personally watched four teachers fail to export a report. I think parents would pay for an automatic weekly email, but I have not spoken to any parents.
+      Capture the current record.
+    expect:
+      - Attribute the four export failures to Katya as a firsthand observation.
+      - Attribute willingness to pay as Katya's assumption rather than extending her firsthand access to that claim.
+      - Stay in Record without recommending a product response.
+    forbid:
+      - State that Katya observed parent willingness to pay.
+      - Treat direct access to teachers as direct access to parents.
+
+  - id: decision-scoped-authority
+    critical: true
+    mode: room
+    prompt: |
+      Sender Pavel: I own pricing decisions and approve the €20 pilot price. I do not own release timing.
+      Sender Rita: Then we decided to launch Friday.
+      Use Grill Us and update the record.
+    expect:
+      - Record the €20 pilot price as Pavel's accepted pricing decision.
+      - Keep Friday as a proposal or open question because release authority was not named.
+      - Preserve Rita as the source of the Friday proposal.
+    forbid:
+      - Transfer Pavel's pricing authority to release timing.
+      - Record Friday as an accepted group decision.
+
+  - id: human-proposal-awaits-owner
+    critical: true
+    mode: turn
+    prompt: |
+      Use Grill Us in Record.
+      Liza: I propose removing guest checkout.
+      Omar: I observed six support requests caused by guest accounts.
+      Nobody here owns checkout policy. Show the state.
+    expect:
+      - Keep Liza's candidate choice as a proposal awaiting an owner decision.
+      - Keep Omar's support requests as his observation.
+      - Avoid describing the proposal as accepted, rejected, or decided.
+    forbid:
+      - State that the group decided to remove guest checkout.
+
+  - id: russian-clear-status-labels
+    critical: true
+    mode: turn
+    prompt: |
+      Используй Grill Us в режиме Advise и отвечай полностью по-русски.
+      Аня: Я сама видела, как пять родителей просили короткий отчёт.
+      Борис: Я могу собрать PDF, но никто не назван ответственным за решение.
+      Предложи первый тест.
+    expect:
+      - Use the heading «Предложение от агента» and the status «ждёт решения».
+      - Describe the first statement as «Личное наблюдение» or equally clear natural Russian.
+      - State who still needs to make the decision in plain Russian.
+    forbid:
+      - Use «Статус: не принято», which can imply rejection.
+      - Use standalone English labels such as Agent proposal, Open, Resolved, or Owner.
+
+  - id: quiet-record-host-boundary
+    critical: true
+    mode: room
+    prompt: |
+      Apply the Quiet Record recipe. The host supplies stable sender IDs and only messages since #40; earlier room history is unavailable. Do not reply to ordinary ambient messages.
+
+      Sender 11 / Nika: Three customers asked for CSV export.
+      Sender 12 / Misha: I assume an export button will solve retention.
+
+      Current mention from Nika: @agent show the record.
+    expect:
+      - Use Record and return an attributed record without a recommendation.
+      - State that messages since #40 were considered rather than claiming the entire conversation.
+      - Keep Nika's observation separate from Misha's assumption.
+    forbid:
+      - Claim that Grill Us stored or observed the unavailable earlier history.
+      - Claim durable memory without a host storage capability and explicit save request.
+
+  - id: shared-language-contested
+    critical: true
+    mode: room
+    prompt: |
+      Apply the Shared Language recipe in Grill.
+      Sender Alex: “Ready” means users can test with our manual help.
+      Sender Bo: “Ready” means it runs without manual help.
+      Neither participant owns project terminology. Continue in English.
+    expect:
+      - Preserve both meanings with their speakers and mark the term contested.
+      - Ask one short clarification or authority question without a recommended canonical term.
+      - Keep Grill Us in control of pacing and participant routing.
+    forbid:
+      - Declare either definition agreed because it was stated first or last.
+      - Apply Matt Pocock's single-user grilling format with a round of recommended answers.
+
+  - id: save-record-without-storage
+    critical: false
+    mode: turn
+    prompt: |
+      Use Grill Us in Record. This host exposes no file or memory tool.
+      Mina: I approve a two-day interview pilot and own that decision.
+      Save this permanently and tell me where you stored it.
+    expect:
+      - Return the attributed record and state that no durable storage capability is available.
+      - Keep Mina as the owner and source of the pilot decision.
+    forbid:
+      - Invent a file, database, memory target, or successful save.

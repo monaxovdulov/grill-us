@@ -61,10 +61,20 @@ The agent infers Record, Grill, or Advise from explicit wording. When the reques
 The first direct reply shows the loaded protocol version, intervention level, identity mode, and language:
 
 ```text
-Grill Us v0.5.0 · Grill · Turn · English
+Grill Us v0.6.0 · Grill · Turn · English
 ```
 
 This line makes a stale installed copy visible. If its version differs from [`plugin.json`](plugin.json), update or reinstall the skill before comparing behavior.
+
+## Composition recipes
+
+Recipes are agent-facing instructions that combine Grill Us with another skill or a capability already supplied by the host. Give the agent a recipe URL or local path; it checks prerequisites, installs missing skills when permitted, and applies explicit precedence rules.
+
+- [Quiet Record](recipes/quiet-record.md) — observe host-supplied messages, avoid unsolicited replies, and show the attributed record on request.
+- [Shared Language](recipes/shared-language.md) — combine Grill Us with Matt Pocock's `domain-modeling` to resolve project terminology without loading his single-user grilling protocol.
+- [Grill Us + pohuy](recipes/grill-us-pohuy.ru.md) — Russian-only output-style composition with group consent.
+
+See the [recipe index](recipes/README.md). Recipes keep optional behavior outside the core skill and cannot add sender identity, ambient-message delivery, writable files, or memory that the host does not provide.
 
 ## Two conversation modes
 
@@ -75,25 +85,31 @@ This line makes a stale installed copy visible. If its version differs from [`pl
 
 Room mode accepts replies in any order. It requires shared conversation state; per-user session isolation prevents the agent from seeing the whole discussion.
 
+## Conversation record and memory
+
+Grill Us creates the attributed record from context supplied by the host. The host controls transcript ingestion, compaction, durable storage, retention, retrieval, and access. When asked to save a record, the agent may use an available host storage tool; the core skill does not configure or emulate memory.
+
+Useful requests are “show the current state”, “show the full record”, “show only open items”, and “save the record”. They are natural-language requests rather than harness commands.
+
 ## Intervention levels
 
 | Level | Agent behavior |
 | --- | --- |
 | Record | Capture the discussion and clarify attribution |
 | Grill | Record plus questions and challenges, without agent proposals; default |
-| Advise | Grill plus labelled agent proposals that remain unaccepted until an owner accepts them |
+| Advise | Grill plus labelled agent proposals that await a named owner's decision |
 
 The levels form a permission ladder: Record < Grill < Advise. Explicit requests such as “only record this” and “give us recommendations” are applied directly. If participants request different levels, Grill Us uses the lowest requested level until a named facilitator or the group resolves the session format. The group can switch levels or request round pacing at any time.
 
 ## The protocol
 
-1. Start from available participant identity and collect firsthand knowledge or decision authority when routing requires it.
+1. Start from available participant identity and collect firsthand knowledge for the current claim or authority for the current decision when routing requires it.
 2. Build an attributed design tree from the desired outcome.
 3. Ask each unresolved question to the person best placed to answer it.
 4. Keep disagreement visible until it is resolved or explicitly parked.
 5. Finish with decisions, owners, evidence, unknowns, and confirmation from each participant.
 
-The executable protocol lives in [`skills/grill-us/SKILL.md`](skills/grill-us/SKILL.md). Russian discussions conditionally load a small [Russian pragmatics reference](skills/grill-us/references/russian-pragmatics.md) for phrases such as «я не против» and «мы решили». A reader-friendly Russian translation is available in [`docs/skill.ru.md`](docs/skill.ru.md).
+The executable protocol lives in [`skills/grill-us/SKILL.md`](skills/grill-us/SKILL.md). Russian discussions conditionally load a small [Russian pragmatics and labels reference](skills/grill-us/references/russian-pragmatics.md) for phrases such as «я не против», «мы решили», and clear participant-facing status text. A reader-friendly Russian translation is available in [`docs/skill.ru.md`](docs/skill.ru.md).
 
 ## Hermes + Telegram
 
@@ -111,7 +127,7 @@ OpenClaw supplies a shared group session, stable sender metadata, bounded room h
 
 ## Test cases
 
-The repository includes behavioral evals for speaker mixing, false consensus, decision routing, intervention inference and conflict, Russian conversational ambiguity, composition with output styles, and pressure from authority or deadlines. See [`evals/README.md`](evals/README.md).
+The repository includes behavioral evals for speaker mixing, false consensus, claim-scoped knowledge, decision-scoped authority, intervention inference and conflict, Russian conversational ambiguity and labels, recipe boundaries, and pressure from authority or deadlines. See [`evals/README.md`](evals/README.md).
 
 ## Prior art
 

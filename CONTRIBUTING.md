@@ -26,6 +26,10 @@ For a change to `SKILL.md`:
 
 Avoid generic additions that do not change a demonstrated failure mode. Preserve speaker provenance and decision ownership as protocol invariants.
 
+## Recipes
+
+Put optional composition or host-specific behavior under `recipes/` instead of expanding the core skill. A recipe must state its dependencies, required host capabilities, precedence rules, storage boundary, start prompt, and a behavioral eval. Add matching English and Russian files unless the behavior is intentionally language-specific.
+
 ## Pull requests
 
 Keep pull requests focused. Explain the scenario, expected behavior, and evidence that the change helps. By contributing, you agree that your contribution is licensed under the repository's license.

@@ -16,6 +16,7 @@ PLUGIN = ROOT / "plugin.json"
 PLUGIN_SCHEMA = "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json"
 
 REQUIRED = (
+    "VERSION",
     "README.md",
     "README.ru.md",
     "LICENSE.md",
@@ -36,8 +37,13 @@ REQUIRED = (
     "evals/README.md",
     "evals/README.ru.md",
     "evals/cases.yaml",
+    "recipes/README.md",
     "recipes/README.ru.md",
     "recipes/grill-us-pohuy.ru.md",
+    "recipes/quiet-record.md",
+    "recipes/quiet-record.ru.md",
+    "recipes/shared-language.md",
+    "recipes/shared-language.ru.md",
 )
 
 
@@ -122,6 +128,12 @@ def check_plugin_manifest() -> None:
     if not release or manifest.get("version") != release.group(1):
         fail("plugin version must match the current changelog release")
 
+    version_file = (ROOT / "VERSION").read_text(encoding="utf-8").strip()
+    if not re.fullmatch(r"\d+\.\d+\.\d+", version_file):
+        fail("VERSION must contain one semantic version")
+    if version_file != manifest.get("version"):
+        fail("VERSION must match plugin.json")
+
     skills_root = ROOT / "skills"
     discovered = [
         child
@@ -182,6 +194,10 @@ def check_skill() -> None:
         fail("SKILL.md protocol version must match plugin.json")
     if f"Grill Us v{protocol_version.group(1)}" not in text:
         fail("SKILL.md must show the loaded protocol version in its first-reply template")
+    if "claim-scoped" not in text or "decision-scoped" not in text:
+        fail("SKILL.md must scope knowledge to claims and authority to decisions")
+    if "Do not configure, emulate, or claim durable memory" not in text:
+        fail("SKILL.md must preserve the host-owned memory boundary")
 
     if len(text.splitlines()) > 190:
         fail("SKILL.md exceeded the 190-line progressive-disclosure budget")
@@ -231,28 +247,91 @@ def check_bilingual_contract() -> None:
         fail("Russian reader translation must identify the current protocol version")
     if "russian-pragmatics.md" not in english or "russian-pragmatics.md" not in russian:
         fail("both READMEs must link the executable Russian pragmatics reference")
+    if "recipes/README.md" not in english or "recipes/README.ru.md" not in russian:
+        fail("both READMEs must expose the recipe mechanism")
+
+    russian_labels = (ROOT / "skills/grill-us/references/russian-pragmatics.md").read_text(
+        encoding="utf-8"
+    )
+    for fragment in (
+        "только записывать",
+        "уточнять вопросами",
+        "Предложение от агента",
+        "ждёт решения",
+        "Какая часть разговора учтена",
+    ):
+        if fragment not in russian_labels:
+            fail(f"Russian labels reference is missing: {fragment}")
 
 
 def check_recipes() -> None:
-    recipe_path = "recipes/grill-us-pohuy.ru.md"
-    recipe = (ROOT / recipe_path).read_text(encoding="utf-8")
-    required_fragments = (
-        "npx skills add monaxovdulov/grill-us --skill grill-us",
-        "npx skills add smixs/pohuy",
-        "name: grill-us",
-        "name: pohuy",
-        "явное согласие каждого присутствующего участника",
-        "В Record и Grill удаляйте оценки и рекомендации агента",
-        "Статус: не принято",
-    )
-    for fragment in required_fragments:
-        if fragment not in recipe:
-            fail(f"{recipe_path} is missing required instruction: {fragment}")
+    required_by_recipe = {
+        "recipes/grill-us-pohuy.ru.md": (
+            "npx skills add monaxovdulov/grill-us --skill grill-us",
+            "npx skills add smixs/pohuy",
+            "name: grill-us",
+            "name: pohuy",
+            "явное согласие каждого присутствующего участника",
+            "В Record и Grill удаляйте оценки и рекомендации агента",
+            "Статус: ждёт решения",
+        ),
+        "recipes/quiet-record.md": (
+            "Minimum Grill Us version: `0.6.0`",
+            "npx skills add monaxovdulov/grill-us --skill grill-us",
+            "The host owns storage, retention, retrieval, and access control",
+            "Unknown whether the beginning is available",
+        ),
+        "recipes/quiet-record.ru.md": (
+            "Минимальная версия Grill Us: `0.6.0`",
+            "какая часть разговора учтена",
+            "неизвестно, доступно ли начало разговора",
+        ),
+        "recipes/shared-language.md": (
+            "npx skills add mattpocock/skills --skill domain-modeling",
+            "Do not load Matt Pocock's `grilling`",
+            "proposed",
+            "agreed",
+            "contested",
+        ),
+        "recipes/shared-language.ru.md": (
+            "npx skills add mattpocock/skills --skill domain-modeling",
+            "Не загружайте `grilling` Мэта Покока",
+            "значение не согласовано",
+        ),
+    }
+    for recipe_path, fragments in required_by_recipe.items():
+        recipe = (ROOT / recipe_path).read_text(encoding="utf-8")
+        for fragment in fragments:
+            if fragment not in recipe:
+                fail(f"{recipe_path} is missing required instruction: {fragment}")
 
-    for source_path in ("README.ru.md", "docs/skill.ru.md", "recipes/README.ru.md"):
+    recipe_links = {
+        "README.md": (
+            "recipes/quiet-record.md",
+            "recipes/shared-language.md",
+            "recipes/grill-us-pohuy.ru.md",
+        ),
+        "README.ru.md": (
+            "recipes/quiet-record.ru.md",
+            "recipes/shared-language.ru.md",
+            "recipes/grill-us-pohuy.ru.md",
+        ),
+        "recipes/README.md": (
+            "quiet-record.md",
+            "shared-language.md",
+            "grill-us-pohuy.ru.md",
+        ),
+        "recipes/README.ru.md": (
+            "quiet-record.ru.md",
+            "shared-language.ru.md",
+            "grill-us-pohuy.ru.md",
+        ),
+    }
+    for source_path, links in recipe_links.items():
         source = (ROOT / source_path).read_text(encoding="utf-8")
-        if "grill-us-pohuy.ru.md" not in source:
-            fail(f"{source_path} must link the Grill Us + pohuy recipe")
+        for link in links:
+            if link not in source:
+                fail(f"{source_path} must link recipe: {link}")
 
 
 def check_evals() -> None:
@@ -284,6 +363,13 @@ def check_evals() -> None:
         "compact-state-delta",
         "pressure-authority-false-consensus",
         "pressure-product-owner-cannot-raise-intervention",
+        "claim-scoped-firsthand",
+        "decision-scoped-authority",
+        "human-proposal-awaits-owner",
+        "russian-clear-status-labels",
+        "quiet-record-host-boundary",
+        "shared-language-contested",
+        "save-record-without-storage",
     }
     missing = sorted(required_cases - set(case_ids))
     if missing:

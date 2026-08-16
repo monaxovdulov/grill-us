@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "grill-us",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Run attributed product interviews for pairs and small groups while preserving speaker provenance, decision ownership, and open disagreement.",
   "author": {
     "name": "Monaxovdulov",

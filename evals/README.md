@@ -1,6 +1,6 @@
 # Behavioral evals
 
-These cases test protocol invariants rather than exact wording. Run each prompt in a fresh session with Grill Us available. Continue until the agent produces either its next round or a final record, then score the behavior against [`cases.yaml`](cases.yaml). The suite includes an OpenClaw-shaped Telegram room history with per-message sender metadata.
+These cases test protocol invariants rather than exact wording. Run each prompt in a fresh session with Grill Us available. Continue until the agent produces either its next round or a final record, then score the behavior against [`cases.yaml`](cases.yaml). The suite covers all three participation styles and includes an OpenClaw-shaped Telegram room history with per-message sender metadata.
 
 ## Scoring
 

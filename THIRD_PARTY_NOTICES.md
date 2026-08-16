@@ -10,7 +10,18 @@ The upstream repository is distributed under the MIT License:
 
 Its license text is available at [`mattpocock/skills/LICENSE`](https://github.com/mattpocock/skills/blob/main/LICENSE).
 
-The Grill Us protocol adds participant registration, stable speaker provenance, knowledge- and authority-based question routing, explicit disagreement handling, multilingual terminology, turn mode, room mode, and group confirmation.
+The Grill Us protocol adds an incremental participant roster, stable speaker provenance, knowledge- and authority-based question routing, explicit disagreement handling, multilingual terminology, turn mode, room mode, and group confirmation.
+
+## Skill authoring references
+
+The 0.5.0 authoring and eval pass consulted these public projects:
+
+- Matt Pocock's [`writing-for-agents`](https://github.com/mattpocock/skills/blob/main/skills/productivity/writing-for-agents/SKILL.md) for context pointers, completion criteria, and instruction pruning.
+- smixs' [`skill-conductor`](https://github.com/smixs/skill-conductor) for no-guidance controls, atomic eval assertions, and pressure testing.
+- smixs' [`pohuy`](https://github.com/smixs/pohuy) and [`humanizer-ru`](https://github.com/smixs/humanizer-ru) as examples of native Russian semantic calibration and preservation rules.
+- smixs' [`awesome-claude-output-styles`](https://github.com/smixs/awesome-claude-output-styles) for separating presentation from task invariants.
+
+Grill Us does not bundle their style corpora, scripts, or output-style definitions.
 
 ## Other public uses of pair grilling
 

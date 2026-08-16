@@ -17,11 +17,12 @@ Field notes are the most useful contribution during the early releases. Open a f
 
 For a change to `SKILL.md`:
 
-1. Describe the observed failure.
-2. Add or update an eval case that reproduces it.
-3. Keep the main skill concise; put mode-specific detail in `references/`.
-4. Update the Russian reader translation when behavior changes.
-5. Run `python scripts/validate.py`.
+1. Describe the observed failure and run the same prompt without the skill.
+2. Add or update an atomic eval case that reproduces the behavior.
+3. Micro-test one wording change at a time in at least five fresh runs.
+4. Keep the main skill concise; put branch-specific detail in `references/`.
+5. Update the Russian reader translation when behavior changes.
+6. Run `python scripts/validate.py`.
 
 Avoid generic additions that do not change a demonstrated failure mode. Preserve speaker provenance and decision ownership as protocol invariants.
 

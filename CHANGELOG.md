@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.5.0 — 2026-08-16
+
+- Treat Record, Grill, and Advise as cumulative intervention levels and infer explicit requests without a setup question.
+- Collect participant knowledge and authority only when routing requires them.
+- Add conditional Russian discussion-pragmatics guidance for ambiguous consent and decision language.
+- Preserve provenance and authority when other skills change tone or formatting.
+- Show the loaded protocol version, intervention level, identity mode, and language in the first direct reply.
+- Add compact state deltas, pressure tests, no-guidance controls, and atomic eval scoring.
+
 ## 0.4.0 — 2026-08-16
 
 - Add configurable Record, Grill, and Advise participation styles.

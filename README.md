@@ -8,7 +8,7 @@
 
 An attributed product interview for pairs and small groups.
 
-Grill Us helps several people work out what to build and why. The agent keeps track of who observed what, who can decide what, where the group disagrees, and which evidence would settle the next decision.
+Grill Us helps several people work out what to build and why. The agent keeps track of who observed what, who can decide what, where the group disagrees, and what could resolve or park each open branch.
 
 [![Install with skills.sh](https://img.shields.io/badge/skills.sh-install-111111?style=flat-square)](#install)
 [![Agent Plugins 1.0.0](https://img.shields.io/badge/Agent_Plugins-1.0.0-6f42c1?style=flat-square)](https://agent-plugins.org/)
@@ -52,11 +52,19 @@ Mira — runs a language school and knows the current workflow.
 Dima — can build the product and owns technical constraints.
 Goal — decide whether a parent progress digest is worth testing.
 Mode — we share this terminal and will prefix every answer with our name.
-Style — grill without recommendations.
+Intervention — challenge us without recommendations.
 Pace — one question at a time.
 ```
 
-The agent will establish the roster, route questions by knowledge and authority, preserve disagreements, and return an attributed decision record. When style is omitted, it asks once and defaults to Grill if the group continues without choosing.
+The agent infers Record, Grill, or Advise from explicit wording. When the request does not select a level, it starts in Grill without a separate setup question. It builds the roster as routing requires new knowledge or authority, preserves disagreements, and returns an attributed decision record.
+
+The first direct reply shows the loaded protocol version, intervention level, identity mode, and language:
+
+```text
+Grill Us v0.5.0 · Grill · Turn · English
+```
+
+This line makes a stale installed copy visible. If its version differs from [`plugin.json`](plugin.json), update or reinstall the skill before comparing behavior.
 
 ## Two conversation modes
 
@@ -67,25 +75,25 @@ The agent will establish the roster, route questions by knowledge and authority,
 
 Room mode accepts replies in any order. It requires shared conversation state; per-user session isolation prevents the agent from seeing the whole discussion.
 
-## Participation styles
+## Intervention levels
 
-| Style | Agent behavior |
+| Level | Agent behavior |
 | --- | --- |
 | Record | Capture the discussion and clarify attribution |
-| Grill | Ask and challenge without recommending answers; default |
-| Advise | Add labelled agent proposals that remain unaccepted until an owner accepts them |
+| Grill | Record plus questions and challenges, without agent proposals; default |
+| Advise | Grill plus labelled agent proposals that remain unaccepted until an owner accepts them |
 
-The group can switch style or request round pacing at any time.
+The levels form a permission ladder: Record < Grill < Advise. Explicit requests such as “only record this” and “give us recommendations” are applied directly. If participants request different levels, Grill Us uses the lowest requested level until a named facilitator or the group resolves the session format. The group can switch levels or request round pacing at any time.
 
 ## The protocol
 
-1. Register participants, firsthand knowledge, and decision authority.
+1. Start from available participant identity and collect firsthand knowledge or decision authority when routing requires it.
 2. Build an attributed design tree from the desired outcome.
 3. Ask each unresolved question to the person best placed to answer it.
-4. Keep disagreement visible until an owner decides, a criterion resolves it, or an experiment is defined.
+4. Keep disagreement visible until it is resolved or explicitly parked.
 5. Finish with decisions, owners, evidence, unknowns, and confirmation from each participant.
 
-The executable protocol lives in [`skills/grill-us/SKILL.md`](skills/grill-us/SKILL.md). A reader-friendly Russian translation is available in [`docs/skill.ru.md`](docs/skill.ru.md).
+The executable protocol lives in [`skills/grill-us/SKILL.md`](skills/grill-us/SKILL.md). Russian discussions conditionally load a small [Russian pragmatics reference](skills/grill-us/references/russian-pragmatics.md) for phrases such as «я не против» and «мы решили». A reader-friendly Russian translation is available in [`docs/skill.ru.md`](docs/skill.ru.md).
 
 ## Hermes + Telegram
 
@@ -103,7 +111,7 @@ OpenClaw supplies a shared group session, stable sender metadata, bounded room h
 
 ## Test cases
 
-The repository includes small behavioral evals for speaker mixing, false consensus, decision routing, turn-mode attribution, and bilingual terminology. See [`evals/README.md`](evals/README.md).
+The repository includes behavioral evals for speaker mixing, false consensus, decision routing, intervention inference and conflict, Russian conversational ambiguity, composition with output styles, and pressure from authority or deadlines. See [`evals/README.md`](evals/README.md).
 
 ## Prior art
 

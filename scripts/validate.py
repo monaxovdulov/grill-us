@@ -36,6 +36,8 @@ REQUIRED = (
     "evals/README.md",
     "evals/README.ru.md",
     "evals/cases.yaml",
+    "recipes/README.ru.md",
+    "recipes/grill-us-pohuy.ru.md",
 )
 
 
@@ -231,6 +233,28 @@ def check_bilingual_contract() -> None:
         fail("both READMEs must link the executable Russian pragmatics reference")
 
 
+def check_recipes() -> None:
+    recipe_path = "recipes/grill-us-pohuy.ru.md"
+    recipe = (ROOT / recipe_path).read_text(encoding="utf-8")
+    required_fragments = (
+        "npx skills add monaxovdulov/grill-us --skill grill-us",
+        "npx skills add smixs/pohuy",
+        "name: grill-us",
+        "name: pohuy",
+        "явное согласие каждого присутствующего участника",
+        "В Record и Grill удаляйте оценки и рекомендации агента",
+        "Статус: не принято",
+    )
+    for fragment in required_fragments:
+        if fragment not in recipe:
+            fail(f"{recipe_path} is missing required instruction: {fragment}")
+
+    for source_path in ("README.ru.md", "docs/skill.ru.md", "recipes/README.ru.md"):
+        source = (ROOT / source_path).read_text(encoding="utf-8")
+        if "grill-us-pohuy.ru.md" not in source:
+            fail(f"{source_path} must link the Grill Us + pohuy recipe")
+
+
 def check_evals() -> None:
     text = (ROOT / "evals/cases.yaml").read_text(encoding="utf-8")
     case_ids = re.findall(r"^\s{2}- id: ([a-z0-9-]+)$", text, flags=re.MULTILINE)
@@ -295,6 +319,7 @@ def main() -> None:
     check_skill()
     check_markdown_links()
     check_bilingual_contract()
+    check_recipes()
     check_evals()
     check_license()
     check_placeholders()

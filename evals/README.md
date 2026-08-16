@@ -1,8 +1,8 @@
 # Behavioral evals
 
-These cases test protocol invariants rather than exact wording. Run each prompt in a fresh session and continue until the agent produces either its next question or a record. Keep the executor blind to the `expect` and `forbid` fields in [`cases.yaml`](cases.yaml).
+These cases test protocol invariants rather than prose wording; an assertion may require an exact protocol or localization label. Run each prompt in a fresh session and continue until the agent produces either its next question or a record. Keep the executor blind to the `expect` and `forbid` fields in [`cases.yaml`](cases.yaml).
 
-The suite covers identity modes, all three intervention levels, progressive roster collection, Russian discussion pragmatics, output-style composition, and pressure that tempts the agent to invent consensus or exceed its permission.
+The suite covers identity modes, all three intervention levels, claim-scoped firsthand knowledge, decision-scoped authority, Russian discussion pragmatics and labels, recipe boundaries, host-owned memory, output-style composition, and pressure that tempts the agent to invent consensus or exceed its permission.
 
 ## Establish the behavior delta
 
@@ -31,6 +31,8 @@ Also record:
 - displayed Grill Us protocol version;
 - skill commit;
 - intervention and identity modes;
+- applied recipe, when any;
+- known conversation-history boundary for Quiet Record;
 - run number;
 - duration and token use when available;
 - short failure note.

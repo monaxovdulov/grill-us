@@ -72,6 +72,8 @@ This produces two inbound paths:
 - an ordinary allowed message becomes a quiet `room_event` with its sender identity;
 - a mention, reply to the bot, or command remains a direct user request.
 
+Apply the [Quiet Record recipe](../recipes/quiet-record.md) when the room should turn these ambient events into an attributed checkpoint on request. OpenClaw remains responsible for room history and memory policy.
+
 Room events do not post final model text automatically. OpenClaw requires `message(action=send)` for a visible room reply. If the selected agent uses the `minimal` or `coding` tool profile, allow the message tool explicitly:
 
 ```json5
@@ -101,7 +103,7 @@ when routing needs it. Keep every claim tied to its speaker, preserve disagreeme
 and ask us questions by name. We may answer in any order.
 ```
 
-Check that the first reply reports `Grill Us v0.5.0 · Grill · Room` and the room language. Participants can then write naturally. OpenClaw supplies sender identity; Grill Us binds that identity to the incremental roster and maintains the attribution ledger.
+Check that the first reply reports `Grill Us v0.6.0 · Grill · Room` and the room language. Participants can then write naturally. OpenClaw supplies sender identity; Grill Us binds that identity to the incremental roster and maintains the attribution ledger.
 
 ## 5. Verify the behavior
 

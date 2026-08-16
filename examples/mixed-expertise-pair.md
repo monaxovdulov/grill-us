@@ -21,7 +21,7 @@ Pace — one question at a time.
 The agent records the roster and starts with one routed question.
 
 ```text
-Grill Us v0.5.0 · Grill · Turn · English
+Grill Us v0.6.0 · Grill · Turn · English
 
 Q1 → Lena — Problem evidence: What did you personally observe during a failed handoff?
 ```

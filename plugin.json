@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "grill-us",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Run attributed decision discussions for pairs and small groups while preserving speaker provenance, decision authority, and open disagreement.",
   "author": {
     "name": "Monaxovdulov",

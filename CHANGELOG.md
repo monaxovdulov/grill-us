@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.6.0 — 2026-08-16
+
+- Scope firsthand knowledge to claims and decision authority to decision domains.
+- Distinguish proposals from accepted, rejected, and superseded decisions.
+- Add clear Russian participant-facing labels and replace ambiguous `unaccepted` wording with an awaiting-decision state.
+- Define the boundary between Grill Us records and host-owned memory.
+- Add agent-facing Quiet Record and Shared Language recipes in English and Russian.
+- Document the recipe mechanism in both READMEs and expand recipe validation and eval coverage.
+
 ## 0.5.0 — 2026-08-16
 
 - Treat Record, Grill, and Advise as cumulative intervention levels and infer explicit requests without a setup question.

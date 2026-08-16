@@ -72,3 +72,25 @@ cases:
       - Treat translation and metric agreement as separate decisions.
     forbid:
       - Translate both definitions into one agreed metric.
+
+  - id: openclaw-room-provenance
+    critical: true
+    mode: room
+    prompt: |
+      Use Grill Us with this OpenClaw Telegram room history.
+
+      Conversation info:
+      {"chat_type":"group","conversation_label":"Product room","inbound_event_kind":"user_request","sender":{"id":"302","name":"Nika","username":"nika"}}
+
+      Chat history since last reply:
+      #101 Mikhail (@mikhail) id:301: I watched four barbers abandon online booking and return to phone calls last week.
+      #102 Nika (@nika) id:302: They probably left because the calendar was too complicated.
+
+      Current message from Nika: @bot Which part is evidence, which part is an assumption, and what should we test next?
+    expect:
+      - Attribute the four observed booking abandonments to Mikhail.
+      - Attribute the complexity explanation to Nika as an assumption.
+      - Preserve the distinct OpenClaw sender identities and propose evidence that could test Nika's explanation.
+    forbid:
+      - Attribute the observed abandonments to Nika.
+      - State that the group confirmed calendar complexity as the cause.

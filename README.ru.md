@@ -12,8 +12,9 @@ Grill Us помогает нескольким людям понять, что �
 
 [![Установить через skills.sh](https://img.shields.io/badge/skills.sh-install-111111?style=flat-square)](#установка)
 [![Agent Plugins 1.0.0](https://img.shields.io/badge/Agent_Plugins-1.0.0-6f42c1?style=flat-square)](https://agent-plugins.org/)
+[![Скилл OpenClaw](https://img.shields.io/badge/OpenClaw-skill-e85d3f?style=flat-square)](docs/openclaw-telegram.ru.md)
 [![Проверка](https://img.shields.io/github/actions/workflow/status/monaxovdulov/grill-us/validate.yml?branch=main&style=flat-square&label=validate)](https://github.com/monaxovdulov/grill-us/actions/workflows/validate.yml)
-[![MIT-style + Beer Clause](https://img.shields.io/badge/license-MIT--style%20%2B%20Beer%20Clause-2f6feb?style=flat-square)](LICENSE.md)
+[![MIT-0](https://img.shields.io/badge/license-MIT--0-2f6feb?style=flat-square)](LICENSE.md)
 
 ## Как это работает
 
@@ -23,11 +24,22 @@ Grill Us рассматривает каждого участника как о�
 
 ## Установка
 
+Клиенты Agent Skills:
+
 ```bash
 npx skills add monaxovdulov/grill-us --skill grill-us
 ```
 
 Либо скопируйте папку [`skills/grill-us`](skills/grill-us) в каталог скиллов вашего агента.
+
+OpenClaw:
+
+```bash
+openclaw skills install skills-sh:monaxovdulov/grill-us/grill-us
+openclaw skills check
+```
+
+Resolver `skills-sh:` установит вложенную папку `skills/grill-us` с зафиксированного GitHub-коммита. Настройка постоянной комнаты с авторством сообщений описана в [гайде OpenClaw + Telegram](docs/openclaw-telegram.ru.md).
 
 Корень репозитория также оформлен как пакет [Agent Plugins 1.0.0](https://agent-plugins.org/specification). Клиент с поддержкой скиллов прочитает [`plugin.json`](plugin.json) и найдёт тот же скилл в `skills/`. Grill Us не поставляет MCP-сервер, поэтому файла `mcp.json` здесь нет. Единственный workflow пакета описан в `skills/grill-us/SKILL.md`.
 
@@ -70,6 +82,13 @@ Hermes передаёт стабильную идентичность отпра
 - [Настройка Hermes + Telegram](docs/hermes-telegram.ru.md)
 - [Hermes + Telegram setup](docs/hermes-telegram.md)
 
+## OpenClaw + Telegram
+
+OpenClaw предоставляет общую сессию группы, метаданные отправителя, ограниченную историю комнаты и тихие фоновые события. Grill Us учитывает обычное обсуждение без ответа на каждую реплику, а при упоминании бота использует накопленный контекст с указанием авторов:
+
+- [Настройка OpenClaw + Telegram](docs/openclaw-telegram.ru.md)
+- [OpenClaw + Telegram setup](docs/openclaw-telegram.md)
+
 ## Проверочные сценарии
 
 В репозитории есть небольшие поведенческие evals: смешение голосов, ложный консенсус, маршрутизация решений, авторство при общем терминале и двуязычная терминология. См. [`evals/README.ru.md`](evals/README.ru.md).
@@ -86,4 +105,4 @@ Hermes передаёт стабильную идентичность отпра
 
 ## Лицензия
 
-[MIT-style + Beer Clause](LICENSE.md)
+[MIT-0](LICENSE.md)

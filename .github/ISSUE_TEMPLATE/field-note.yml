@@ -12,7 +12,7 @@ body:
     attributes:
       label: Setup
       description: Participant count and roles, agent, model, and harness.
-      placeholder: "2 participants: domain expert + builder; Hermes in a Telegram topic"
+      placeholder: "2 participants: domain expert + builder; OpenClaw or Hermes in a Telegram room"
     validations:
       required: true
 

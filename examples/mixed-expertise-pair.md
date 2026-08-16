@@ -14,14 +14,16 @@ Max — builds the software. I know the integration and privacy constraints and
 own technical feasibility decisions.
 
 Goal — decide what to test before building a handoff product.
-Style — Grill.
+Intervention — Grill.
 Pace — one question at a time.
 ```
 
 The agent records the roster and starts with one routed question.
 
 ```text
-❓ Q1 → Lena — Problem evidence: What did you personally observe during a failed handoff?
+Grill Us v0.5.0 · Grill · Turn · English
+
+Q1 → Lena — Problem evidence: What did you personally observe during a failed handoff?
 ```
 
 ## Answers
@@ -34,7 +36,7 @@ four similar misses in six weeks. One required a supervisor call.
 The agent continues after the addressed participant answers:
 
 ```text
-❓ Q2 → Max — Reversible test: What is the smallest test that avoids storing patient data?
+Q2 → Max — Reversible test: What is the smallest test that avoids storing patient data?
 ```
 
 ```text
@@ -43,7 +45,7 @@ database, or patient identifiers are needed.
 ```
 
 ```text
-❓ Q3 → everyone — Success threshold: What result would justify another week of work?
+Q3 → everyone — Success threshold: What result would justify another week of work?
 ```
 
 ```text
@@ -66,15 +68,19 @@ Lena: Voice notes would be fastest for carers.
 Max: Voice introduces sensitive audio and transcription risk. I prefer a form.
 ```
 
-The agent preserves both branches and routes the next decision:
+The agent preserves both branches and asks the next routed question:
 
 ```text
-❓ Q4 → Lena — User evidence: Do you have direct evidence that typing is the main handoff failure?
-
-❓ Q5 → Max — Safe comparison: Can the test compare a form and disposable voice capture without retaining audio?
+Q4 → Lena — User evidence: Do you have direct evidence that typing is the main handoff failure?
 ```
 
-Lena has no evidence about typing. Max can support a supervised, non-retained voice prototype. The pair chooses an experiment rather than reporting consensus.
+Lena has no evidence about typing. The agent then asks Max:
+
+```text
+Q5 → Max — Safe comparison: Can the test compare a form and disposable voice capture without retaining audio?
+```
+
+Max can support a supervised, non-retained voice prototype. The pair chooses an experiment rather than reporting consensus.
 
 ## Final record excerpt
 

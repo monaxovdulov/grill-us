@@ -72,6 +72,7 @@ Our goal is to decide whether a parent progress digest is worth testing.
 ```
 
 Participants can then answer in any order. Mention or reply to the bot when you want the next round or an updated decision record.
+The first direct reply should report `Grill Us v0.5.0 · Grill · Room` and the room language; a different version indicates a stale installed copy.
 
 ## 6. Verify attribution before a real session
 

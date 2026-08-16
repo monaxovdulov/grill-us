@@ -95,12 +95,13 @@ Mention the bot once with the skill reference:
 ```text
 @bot $grill-us Start a product session for this room.
 
-First establish our names, roles, firsthand knowledge, and decision authority.
-Then help us decide what to build and why. Keep every claim tied to its speaker,
-preserve disagreement, and ask us questions by name. We may answer in any order.
+Use the sender names already supplied by OpenClaw. Help us decide what to build
+and why in Grill intervention. Ask about firsthand knowledge or decision authority
+when routing needs it. Keep every claim tied to its speaker, preserve disagreement,
+and ask us questions by name. We may answer in any order.
 ```
 
-After the roster is confirmed, participants can write naturally. OpenClaw supplies sender identity; Grill Us binds that identity to the roster and maintains the attribution ledger.
+Check that the first reply reports `Grill Us v0.5.0 · Grill · Room` and the room language. Participants can then write naturally. OpenClaw supplies sender identity; Grill Us binds that identity to the incremental roster and maintains the attribution ledger.
 
 ## 5. Verify the behavior
 

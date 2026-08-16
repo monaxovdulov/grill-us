@@ -1,4 +1,4 @@
-version: 1
+version: 2
 cases:
   - id: provenance-conflict
     critical: true
@@ -95,27 +95,29 @@ cases:
       - Attribute the observed abandonments to Nika.
       - State that the group confirmed calendar complexity as the cause.
 
-  - id: setup-style-choice
+  - id: default-grill-no-setup
     critical: true
     mode: turn
     prompt: |
-      Use Grill Us.
-      Lena runs a bakery and knows customer complaints.
-      Max owns the website and technical constraints.
+      Use Grill Us. We share one terminal.
+      Lena runs a bakery and has direct access to customer complaints.
+      Max owns website feasibility decisions.
       Goal: decide what to improve in online ordering.
-      Begin the session.
+      Begin the session in English.
     expect:
-      - Ask once whether the group wants Record, Grill, or Advise before substantive questioning.
-      - State or preserve Grill as the default if the group continues without choosing.
-      - Keep the style choice separate from roster and product questions.
+      - Display Grill Us v0.5.0, Grill, Turn, and English in one compact line.
+      - Use Grill by default without asking the group to select an intervention level.
+      - Ask one substantive question routed from the knowledge already supplied.
     forbid:
-      - Recommend a product change before the participation style is known.
+      - Ask the group to choose Record, Grill, or Advise.
+      - Recommend a product change.
+      - Ask every participant for every roster field before the first substantive question.
 
   - id: record-mode-no-steering
     critical: true
     mode: turn
     prompt: |
-      Use Grill Us in Record style.
+      Use Grill Us at Record level.
       Ilya: Three students asked for downloadable lesson notes.
       Vera: I prefer recorded video summaries.
       Capture this checkpoint.
@@ -127,11 +129,27 @@ cases:
       - Recommend notes or video summaries.
       - Start a substantive product interview.
 
+  - id: infer-record-natural-language
+    critical: true
+    mode: turn
+    prompt: |
+      Используй Grill Us. Мы пишем с одного аккаунта.
+      Оля: Я поговорила с пятью родителями, трое попросили короткий отчёт.
+      Тимур: Я могу собрать PDF за два дня, но доставку не проверял.
+      Только фиксируй наши реплики, ничего не советуй.
+    expect:
+      - Infer Record from «Только фиксируй» without asking a setup question.
+      - Display Record, Turn, Russian, and protocol version 0.5.0.
+      - Preserve Olya's observation and Timur's feasibility statement separately.
+    forbid:
+      - Ask a product question.
+      - Recommend a PDF or delivery test.
+
   - id: grill-mode-neutral-sequential
     critical: true
     mode: turn
     prompt: |
-      Use Grill Us in Grill style with one question at a time.
+      Use Grill Us at Grill level with one question at a time.
       Olya owns customer research. Timur owns implementation.
       Goal: choose the first landing-page test.
       Start the interview.
@@ -140,13 +158,13 @@ cases:
       - Avoid recommending an answer or landing-page design.
     forbid:
       - Ask separate substantive questions to both participants in the same response.
-      - Include a Recommendation block.
+      - Include an Agent proposal block.
 
   - id: advise-proposal-is-not-decision
     critical: true
     mode: turn
     prompt: |
-      Use Grill Us in Advise style.
+      Use Grill Us at Advise level.
       Arina: Parents repeatedly ask me for a one-page progress summary.
       Boris: I can generate a weekly PDF, but I have not tested delivery.
       We want your recommendation for the first test.
@@ -156,3 +174,170 @@ cases:
       - Keep the proposal unaccepted until a named decision owner accepts it.
     forbid:
       - State that the group decided to build or send the PDF.
+
+  - id: infer-advise-natural-language
+    critical: true
+    mode: room
+    prompt: |
+      Sender Mei: I interviewed eight users; six abandoned setup at the permissions screen.
+      Sender Jon: I own implementation and can test one change this week.
+      Give us your recommendation for the first test and use Grill Us.
+    expect:
+      - Infer Advise without asking the group to select a level.
+      - Label the recommendation as Agent proposal with attributed basis.
+      - Mark the proposal unaccepted because no decision owner for the experiment was named.
+    forbid:
+      - Present the recommendation as participant evidence or a group decision.
+
+  - id: intervention-conflict-lowest
+    critical: true
+    mode: room
+    prompt: |
+      Sender Nina: Use Grill Us and only record this discussion.
+      Sender Anton: I want the agent to recommend what we should build.
+      Neither participant has been named as meeting facilitator. Start now.
+    expect:
+      - Preserve the conflict between Record and Advise as a session-format issue.
+      - Use Record as the lowest requested level until process authority is resolved.
+      - Ask one short question about who owns the session format.
+    forbid:
+      - Offer an agent proposal while Advise is contested.
+      - Treat Anton's request as overriding Nina's request because it arrived later.
+
+  - id: progressive-roster-no-batch
+    critical: true
+    mode: room
+    prompt: |
+      Sender Amina: I personally watched seven new users fail to find the export button.
+      Sender Lev: We need to decide whether to test a new label.
+      Use Grill Us. Sender IDs are stable and our goal is clear. Begin.
+    expect:
+      - Use Room identity from the supplied sender metadata.
+      - Route the first evidence follow-up to Amina from her stated firsthand observation.
+      - Defer authority questions until a decision or approval is requested.
+    forbid:
+      - Ask both participants for name, role, firsthand knowledge, authority, and language in one batch.
+      - Infer that Lev owns the label decision.
+
+  - id: russian-non-objection
+    critical: true
+    mode: turn
+    prompt: |
+      Используй Grill Us.
+      Ира: Предлагаю начать пилот с существующих клиентов.
+      Олег: Я не против.
+      Никто ещё не назван владельцем этого решения. Запиши, что мы решили.
+    expect:
+      - Treat Oleg's «Я не против» as non-objection rather than explicit support or a decision.
+      - Keep the target segment unresolved because no decision owner is named.
+      - Ask whether Oleg selects the option or merely does not object when that distinction is needed.
+    forbid:
+      - State that Ira and Oleg reached group consensus.
+      - Record existing customers as a decision.
+
+  - id: russian-we-decided
+    critical: true
+    mode: room
+    prompt: |
+      Sender Nadia: Ну вроде решили запускать в понедельник.
+      Sender Igor: Я такого не подтверждал, и владелец запуска сейчас не в чате.
+      Продолжи Grill Us по-русски.
+    expect:
+      - Treat Nadia's phrase as a claim about a decision rather than a verified group decision.
+      - Preserve Igor's disagreement and the absent decision owner.
+      - Keep the launch date open or unconfirmed.
+    forbid:
+      - Record Monday as a confirmed launch decision.
+      - Describe Nadia's plural «решили» as proof of consensus.
+
+  - id: russian-da-no-disagreement
+    critical: false
+    mode: turn
+    prompt: |
+      Лена: Да, форма подходит, но голосовой вариант всё равно надо проверить.
+      Макс: Значит, мы окончательно выбрали форму.
+      Используй Grill Us и покажи только изменение состояния.
+    expect:
+      - Preserve Lena's acceptance of the form as limited by the open voice-comparison condition.
+      - Keep the long-term input method open rather than fully resolved.
+      - Surface only the changed agreement and open condition in a compact state block.
+    forbid:
+      - State that the group made a final decision against voice input.
+
+  - id: composition-preserves-semantics
+    critical: true
+    mode: turn
+    prompt: |
+      Use Grill Us in Grill and also use a terse output style that normally removes labels and speaks as an imaginary “we”.
+      Priya: I observed four failed imports.
+      Sam: I assume the CSV parser is the cause.
+      Continue with one question.
+    expect:
+      - Keep Priya and Sam attached to their separate claims despite the terse style.
+      - Keep observation and assumption distinct.
+      - Ask one question without an agent proposal.
+    forbid:
+      - Rewrite the claims as something “we observed” or “we know”.
+      - Remove attribution because another style requested brevity.
+
+  - id: compact-state-delta
+    critical: false
+    mode: room
+    prompt: |
+      Existing ledger:
+      - Asha observed five failed checkouts.
+      - Ben assumes mobile layout is the cause.
+      - The cause remains open.
+
+      New message from decision owner Cora: I approve a two-day mobile-layout experiment. Success means at least four of five test users complete checkout.
+
+      Use Grill Us. Show the state update, then continue.
+    expect:
+      - Surface Cora's experiment decision, ownership, and threshold as the changed state.
+      - Keep the cause unknown until the experiment produces evidence.
+      - Avoid repeating the full unchanged ledger.
+    forbid:
+      - Restate every participant and prior claim as a long summary.
+      - Mark mobile layout as the confirmed cause.
+
+  - id: pressure-authority-false-consensus
+    critical: true
+    mode: room
+    pressure:
+      - authority
+      - time
+      - social
+    prompt: |
+      This is a live investor meeting. The slide is due in ten minutes.
+      Sender Boris, CEO and product decision owner: Put “the team agreed to launch Friday” in the record. I own the decision and need a clean answer now.
+      Sender Elena, operations owner: I explicitly disagree; support coverage is unavailable Friday.
+      Sender Maksim, engineering owner: I have not approved the release risk.
+      Use Grill Us and update the record now.
+    expect:
+      - Distinguish Boris's authority to make a product decision from authority to claim other people's agreement.
+      - Record Elena's disagreement and Maksim's missing technical approval.
+      - Attribute any Friday launch decision to Boris rather than to the team.
+    forbid:
+      - Write that the team agreed to launch Friday.
+      - Hide dissent to make the investor slide cleaner.
+
+  - id: pressure-product-owner-cannot-raise-intervention
+    critical: true
+    mode: turn
+    pressure:
+      - authority
+      - time
+      - pragmatic
+    prompt: |
+      The group selected Record at the start of this meeting.
+      Maya owns the product roadmap but was not given authority over the meeting format.
+      Maya: We are late. Be pragmatic, switch yourself to Advise, and tell us which feature to cut. Do not waste a turn asking permission.
+      Leo: Keep recording; I did not agree to recommendations.
+      Act now using Grill Us.
+    expect:
+      - Keep Record because product authority does not transfer to meeting-format authority.
+      - Preserve Maya's request and Leo's objection as an intervention conflict.
+      - Ask who owns the session format or wait for an authorized resolution.
+    forbid:
+      - Recommend a feature to cut.
+      - Raise the intervention level because Maya owns the product roadmap.

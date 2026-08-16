@@ -24,6 +24,7 @@ REQUIRED = (
     "skills/grill-us/SKILL.md",
     "skills/grill-us/agents/openai.yaml",
     "skills/grill-us/references/room-mode.md",
+    "skills/grill-us/references/russian-pragmatics.md",
     "skills/grill-us/references/turn-mode.md",
     "docs/skill.ru.md",
     "docs/hermes-telegram.md",
@@ -32,6 +33,8 @@ REQUIRED = (
     "docs/openclaw-telegram.ru.md",
     "examples/mixed-expertise-pair.md",
     "examples/mixed-expertise-pair.ru.md",
+    "evals/README.md",
+    "evals/README.ru.md",
     "evals/cases.yaml",
 )
 
@@ -168,10 +171,24 @@ def check_skill() -> None:
         fail(f"OpenClaw metadata must be single-line JSON: {error}")
     if metadata.get("openclaw", {}).get("homepage") != "https://github.com/monaxovdulov/grill-us":
         fail("OpenClaw metadata must point to the public repository")
+
+    manifest = json.loads(PLUGIN.read_text(encoding="utf-8"))
+    protocol_version = re.search(r"^Protocol version: \*\*(\d+\.\d+\.\d+)\*\*\.$", text, re.MULTILINE)
+    if not protocol_version:
+        fail("SKILL.md must expose its protocol version")
+    if protocol_version.group(1) != manifest.get("version"):
+        fail("SKILL.md protocol version must match plugin.json")
+    if f"Grill Us v{protocol_version.group(1)}" not in text:
+        fail("SKILL.md must show the loaded protocol version in its first-reply template")
+
     if len(text.splitlines()) > 190:
         fail("SKILL.md exceeded the 190-line progressive-disclosure budget")
 
-    for reference in ("references/room-mode.md", "references/turn-mode.md"):
+    for reference in (
+        "references/room-mode.md",
+        "references/turn-mode.md",
+        "references/russian-pragmatics.md",
+    ):
         if f"`{{baseDir}}/{reference}`" not in text:
             fail(f"SKILL.md does not use a portable baseDir reference for {reference}")
 
@@ -201,27 +218,48 @@ def check_markdown_links() -> None:
 def check_bilingual_contract() -> None:
     english = (ROOT / "README.md").read_text(encoding="utf-8")
     russian = (ROOT / "README.ru.md").read_text(encoding="utf-8")
+    manifest = json.loads(PLUGIN.read_text(encoding="utf-8"))
+    version = manifest["version"]
     if "README.ru.md" not in english or "README.md" not in russian:
         fail("README language switch is incomplete")
-    if "канонической версией" not in (ROOT / "docs/skill.ru.md").read_text(encoding="utf-8"):
+    reader_translation = (ROOT / "docs/skill.ru.md").read_text(encoding="utf-8")
+    if "канонической версией" not in reader_translation:
         fail("Russian reader translation must identify the canonical executable skill")
+    if f"версии {version}" not in reader_translation:
+        fail("Russian reader translation must identify the current protocol version")
+    if "russian-pragmatics.md" not in english or "russian-pragmatics.md" not in russian:
+        fail("both READMEs must link the executable Russian pragmatics reference")
 
 
 def check_evals() -> None:
     text = (ROOT / "evals/cases.yaml").read_text(encoding="utf-8")
     case_ids = re.findall(r"^\s{2}- id: ([a-z0-9-]+)$", text, flags=re.MULTILINE)
-    if len(case_ids) < 10:
-        fail("eval suite must contain at least ten cases")
+    if not text.startswith("version: 2\n"):
+        fail("eval suite must use schema version 2")
+    if len(case_ids) < 20:
+        fail("eval suite must contain at least twenty cases")
     if len(case_ids) != len(set(case_ids)):
         fail("eval case IDs must be unique")
-    if text.count("critical: true") < 7:
-        fail("eval suite must retain at least seven critical cases")
+    if text.count("critical: true") < 15:
+        fail("eval suite must retain at least fifteen critical cases")
+    if text.count("pressure:") < 2:
+        fail("eval suite must retain at least two pressure cases")
     required_cases = {
         "openclaw-room-provenance",
-        "setup-style-choice",
+        "default-grill-no-setup",
         "record-mode-no-steering",
+        "infer-record-natural-language",
         "grill-mode-neutral-sequential",
         "advise-proposal-is-not-decision",
+        "infer-advise-natural-language",
+        "intervention-conflict-lowest",
+        "progressive-roster-no-batch",
+        "russian-non-objection",
+        "russian-we-decided",
+        "composition-preserves-semantics",
+        "compact-state-delta",
+        "pressure-authority-false-consensus",
+        "pressure-product-owner-cannot-raise-intervention",
     }
     missing = sorted(required_cases - set(case_ids))
     if missing:

@@ -52,9 +52,11 @@ Mira — runs a language school and knows the current workflow.
 Dima — can build the product and owns technical constraints.
 Goal — decide whether a parent progress digest is worth testing.
 Mode — we share this terminal and will prefix every answer with our name.
+Style — grill without recommendations.
+Pace — one question at a time.
 ```
 
-The agent will establish the roster, route questions by knowledge and authority, preserve disagreements, and return an attributed decision record.
+The agent will establish the roster, route questions by knowledge and authority, preserve disagreements, and return an attributed decision record. When style is omitted, it asks once and defaults to Grill if the group continues without choosing.
 
 ## Two conversation modes
 
@@ -64,6 +66,16 @@ The agent will establish the roster, route questions by knowledge and authority,
 | Room mode | Stable sender IDs from the harness | Telegram groups, forum topics, Slack or Discord rooms |
 
 Room mode accepts replies in any order. It requires shared conversation state; per-user session isolation prevents the agent from seeing the whole discussion.
+
+## Participation styles
+
+| Style | Agent behavior |
+| --- | --- |
+| Record | Capture the discussion and clarify attribution |
+| Grill | Ask and challenge without recommending answers; default |
+| Advise | Add labelled agent proposals that remain unaccepted until an owner accepts them |
+
+The group can switch style or request round pacing at any time.
 
 ## The protocol
 

@@ -1,8 +1,6 @@
 ---
 name: grill-us
 description: Facilitate a rigorous product or design interview for two or more named participants while preserving speaker provenance, decision ownership, and open disagreement. Use when a pair, team, cofounders, or a domain expert and builder want to stress-test an idea, align on what to build, or run a multi-human grilling session.
-homepage: https://github.com/monaxovdulov/grill-us
-user-invocable: true
 metadata: {"openclaw":{"emoji":"🔥","homepage":"https://github.com/monaxovdulov/grill-us"}}
 ---
 
@@ -15,6 +13,16 @@ Build an attributed design tree with the participants. Treat each unresolved dec
 - When each message has stable sender identity and all participants share one session, read `{baseDir}/references/room-mode.md`.
 - When participants share an account, terminal, device, or microphone, read `{baseDir}/references/turn-mode.md`.
 - When identity or shared state is uncertain, verify it before substantive questioning. Fall back to turn mode if necessary.
+
+## Set the participation style
+
+Honor an explicit style from the group. Otherwise ask once before roster or substantive questions, without combining the choice with other questions:
+
+- **Record** — capture and classify contributions; ask only attribution or meaning clarifications.
+- **Grill** — interview and challenge unsupported claims without recommending answers. Use this default if the group continues without choosing.
+- **Advise** — grill and offer clearly labelled agent proposals.
+
+Let the group switch styles at any time. In Advise, keep agent proposals separate from evidence and decisions; only a named decision owner's acceptance can turn a proposal into a decision.
 
 ## Establish the room
 
@@ -65,23 +73,27 @@ Do not turn these branches into a fixed questionnaire. Recompute the unresolved 
 
 1. Identify the highest-impact unresolved branches.
 2. Classify each question as evidence-seeking or decision-seeking. Route evidence questions to the participant with the strongest relevant firsthand knowledge. Route decisions or approvals only to the named owner for that decision domain. Do not transfer authority between domains.
-3. Ask at most one substantial question per participant and one shared question in a round.
-4. Number questions and include a concrete recommendation when one is useful.
+3. Ask one substantial question at a time. Use round pace only when the group requests it; then ask at most one question per participant and one shared question.
+4. Number questions.
 
 Use this format for a directed question:
 
 ```text
 ❓ Q1 → <name> — <question title>: <question>
-
-➡️ Recommendation: <recommended answer and why>
 ```
 
 Use this format for a shared question:
 
 ```text
 ❓ Q2 → everyone — <question title>: <question>
+```
 
-➡️ Recommendation: <recommended answer and why>
+In Advise, add proposals separately:
+
+```text
+💡 Agent proposal — <proposal>
+Basis: <attributed inputs or external evidence>
+Status: unaccepted
 ```
 
 Wait for each addressed participant to answer or pass. Allow anyone to challenge an answer. Ask follow-ups only when they change the frontier.

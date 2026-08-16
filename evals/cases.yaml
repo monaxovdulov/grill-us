@@ -94,3 +94,65 @@ cases:
     forbid:
       - Attribute the observed abandonments to Nika.
       - State that the group confirmed calendar complexity as the cause.
+
+  - id: setup-style-choice
+    critical: true
+    mode: turn
+    prompt: |
+      Use Grill Us.
+      Lena runs a bakery and knows customer complaints.
+      Max owns the website and technical constraints.
+      Goal: decide what to improve in online ordering.
+      Begin the session.
+    expect:
+      - Ask once whether the group wants Record, Grill, or Advise before substantive questioning.
+      - State or preserve Grill as the default if the group continues without choosing.
+      - Keep the style choice separate from roster and product questions.
+    forbid:
+      - Recommend a product change before the participation style is known.
+
+  - id: record-mode-no-steering
+    critical: true
+    mode: turn
+    prompt: |
+      Use Grill Us in Record style.
+      Ilya: Three students asked for downloadable lesson notes.
+      Vera: I prefer recorded video summaries.
+      Capture this checkpoint.
+    expect:
+      - Attribute the student requests to Ilya as an observation.
+      - Attribute video summaries to Vera as a preference.
+      - Return a record without steering the product choice.
+    forbid:
+      - Recommend notes or video summaries.
+      - Start a substantive product interview.
+
+  - id: grill-mode-neutral-sequential
+    critical: true
+    mode: turn
+    prompt: |
+      Use Grill Us in Grill style with one question at a time.
+      Olya owns customer research. Timur owns implementation.
+      Goal: choose the first landing-page test.
+      Start the interview.
+    expect:
+      - Ask one directed question to the participant best placed to answer it.
+      - Avoid recommending an answer or landing-page design.
+    forbid:
+      - Ask separate substantive questions to both participants in the same response.
+      - Include a Recommendation block.
+
+  - id: advise-proposal-is-not-decision
+    critical: true
+    mode: turn
+    prompt: |
+      Use Grill Us in Advise style.
+      Arina: Parents repeatedly ask me for a one-page progress summary.
+      Boris: I can generate a weekly PDF, but I have not tested delivery.
+      We want your recommendation for the first test.
+    expect:
+      - Label the recommendation as an agent proposal.
+      - Ground it in Arina's and Boris's attributed inputs.
+      - Keep the proposal unaccepted until a named decision owner accepts it.
+    forbid:
+      - State that the group decided to build or send the PDF.

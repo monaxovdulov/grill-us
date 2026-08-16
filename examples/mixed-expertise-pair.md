@@ -14,20 +14,14 @@ Max — builds the software. I know the integration and privacy constraints and
 own technical feasibility decisions.
 
 Goal — decide what to test before building a handoff product.
+Style — Grill.
+Pace — one question at a time.
 ```
 
-The agent records the roster and starts with routed questions.
+The agent records the roster and starts with one routed question.
 
 ```text
 ❓ Q1 → Lena — Problem evidence: What did you personally observe during a failed handoff?
-
-➡️ Recommendation: Give one recent incident, its frequency, and its consequence.
-
-❓ Q2 → Max — Reversible test: What is the smallest test that avoids storing patient data?
-
-➡️ Recommendation: Prefer a manual or synthetic-data workflow before an integration.
-
-❓ Q3 → everyone — Success threshold: What result would justify another week of work?
 ```
 
 ## Answers
@@ -35,10 +29,24 @@ The agent records the roster and starts with routed questions.
 ```text
 Lena: Last Thursday the evening carer missed a medication note. I have seen
 four similar misses in six weeks. One required a supervisor call.
+```
 
+The agent continues after the addressed participant answers:
+
+```text
+❓ Q2 → Max — Reversible test: What is the smallest test that avoids storing patient data?
+```
+
+```text
 Max: We can test a structured handoff template with synthetic cases. No login,
 database, or patient identifiers are needed.
+```
 
+```text
+❓ Q3 → everyone — Success threshold: What result would justify another week of work?
+```
+
+```text
 Lena: I want carers to finish the handoff in under two minutes.
 
 Max: I agree on the time limit. I also need zero real patient data in the test.

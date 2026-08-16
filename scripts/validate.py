@@ -155,23 +155,19 @@ def check_skill() -> None:
         keys.append(key.strip())
         values[key.strip()] = value.strip()
 
-    expected_keys = ["name", "description", "homepage", "user-invocable", "metadata"]
+    expected_keys = ["name", "description", "metadata"]
     if keys != expected_keys:
-        fail("skill frontmatter must contain portable and OpenClaw metadata in canonical order")
+        fail("skill frontmatter must contain portable metadata in canonical order")
     if values["name"] != "grill-us":
         fail("skill name must be grill-us")
     if len(values["description"]) < 80:
         fail("skill description must include useful trigger context")
-    if values["homepage"] != "https://github.com/monaxovdulov/grill-us":
-        fail("skill homepage must point to the public repository")
-    if values["user-invocable"] != "true":
-        fail("grill-us must remain directly invocable")
     try:
         metadata = json.loads(values["metadata"])
     except json.JSONDecodeError as error:
         fail(f"OpenClaw metadata must be single-line JSON: {error}")
-    if metadata.get("openclaw", {}).get("homepage") != values["homepage"]:
-        fail("OpenClaw homepage metadata must match the skill homepage")
+    if metadata.get("openclaw", {}).get("homepage") != "https://github.com/monaxovdulov/grill-us":
+        fail("OpenClaw metadata must point to the public repository")
     if len(text.splitlines()) > 190:
         fail("SKILL.md exceeded the 190-line progressive-disclosure budget")
 
@@ -214,14 +210,22 @@ def check_bilingual_contract() -> None:
 def check_evals() -> None:
     text = (ROOT / "evals/cases.yaml").read_text(encoding="utf-8")
     case_ids = re.findall(r"^\s{2}- id: ([a-z0-9-]+)$", text, flags=re.MULTILINE)
-    if len(case_ids) < 5:
-        fail("eval suite must contain at least five cases")
+    if len(case_ids) < 10:
+        fail("eval suite must contain at least ten cases")
     if len(case_ids) != len(set(case_ids)):
         fail("eval case IDs must be unique")
-    if text.count("critical: true") < 3:
-        fail("eval suite must retain at least three critical cases")
-    if "openclaw-room-provenance" not in case_ids:
-        fail("eval suite must cover OpenClaw room provenance")
+    if text.count("critical: true") < 7:
+        fail("eval suite must retain at least seven critical cases")
+    required_cases = {
+        "openclaw-room-provenance",
+        "setup-style-choice",
+        "record-mode-no-steering",
+        "grill-mode-neutral-sequential",
+        "advise-proposal-is-not-decision",
+    }
+    missing = sorted(required_cases - set(case_ids))
+    if missing:
+        fail("eval suite is missing required cases: " + ", ".join(missing))
 
 
 def check_license() -> None:

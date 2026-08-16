@@ -1,6 +1,9 @@
 ---
 name: grill-us
 description: Facilitate a rigorous product or design interview for two or more named participants while preserving speaker provenance, decision ownership, and open disagreement. Use when a pair, team, cofounders, or a domain expert and builder want to stress-test an idea, align on what to build, or run a multi-human grilling session.
+homepage: https://github.com/monaxovdulov/grill-us
+user-invocable: true
+metadata: {"openclaw":{"emoji":"🔥","homepage":"https://github.com/monaxovdulov/grill-us"}}
 ---
 
 # Grill Us
@@ -9,8 +12,8 @@ Build an attributed design tree with the participants. Treat each unresolved dec
 
 ## Select the conversation mode
 
-- When each message has stable sender identity and all participants share one session, read [room mode](references/room-mode.md).
-- When participants share an account, terminal, device, or microphone, read [turn mode](references/turn-mode.md).
+- When each message has stable sender identity and all participants share one session, read `{baseDir}/references/room-mode.md`.
+- When participants share an account, terminal, device, or microphone, read `{baseDir}/references/turn-mode.md`.
 - When identity or shared state is uncertain, verify it before substantive questioning. Fall back to turn mode if necessary.
 
 ## Establish the room

@@ -28,6 +28,8 @@ REQUIRED = (
     "docs/skill.ru.md",
     "docs/hermes-telegram.md",
     "docs/hermes-telegram.ru.md",
+    "docs/openclaw-telegram.md",
+    "docs/openclaw-telegram.ru.md",
     "examples/mixed-expertise-pair.md",
     "examples/mixed-expertise-pair.ru.md",
     "evals/cases.yaml",
@@ -153,18 +155,29 @@ def check_skill() -> None:
         keys.append(key.strip())
         values[key.strip()] = value.strip()
 
-    if keys != ["name", "description"]:
-        fail("portable skill frontmatter must contain only name and description")
+    expected_keys = ["name", "description", "homepage", "user-invocable", "metadata"]
+    if keys != expected_keys:
+        fail("skill frontmatter must contain portable and OpenClaw metadata in canonical order")
     if values["name"] != "grill-us":
         fail("skill name must be grill-us")
     if len(values["description"]) < 80:
         fail("skill description must include useful trigger context")
+    if values["homepage"] != "https://github.com/monaxovdulov/grill-us":
+        fail("skill homepage must point to the public repository")
+    if values["user-invocable"] != "true":
+        fail("grill-us must remain directly invocable")
+    try:
+        metadata = json.loads(values["metadata"])
+    except json.JSONDecodeError as error:
+        fail(f"OpenClaw metadata must be single-line JSON: {error}")
+    if metadata.get("openclaw", {}).get("homepage") != values["homepage"]:
+        fail("OpenClaw homepage metadata must match the skill homepage")
     if len(text.splitlines()) > 190:
         fail("SKILL.md exceeded the 190-line progressive-disclosure budget")
 
     for reference in ("references/room-mode.md", "references/turn-mode.md"):
-        if f"]({reference})" not in text:
-            fail(f"SKILL.md does not link to {reference}")
+        if f"`{{baseDir}}/{reference}`" not in text:
+            fail(f"SKILL.md does not use a portable baseDir reference for {reference}")
 
     agent_yaml = (ROOT / "skills/grill-us/agents/openai.yaml").read_text(encoding="utf-8")
     if "$grill-us" not in agent_yaml:
@@ -207,6 +220,19 @@ def check_evals() -> None:
         fail("eval case IDs must be unique")
     if text.count("critical: true") < 3:
         fail("eval suite must retain at least three critical cases")
+    if "openclaw-room-provenance" not in case_ids:
+        fail("eval suite must cover OpenClaw room provenance")
+
+
+def check_license() -> None:
+    manifest = json.loads(PLUGIN.read_text(encoding="utf-8"))
+    license_text = (ROOT / "LICENSE.md").read_text(encoding="utf-8")
+    if manifest.get("license") != "MIT-0":
+        fail("plugin manifest must use the MIT-0 SPDX identifier")
+    if not license_text.startswith("MIT No Attribution\n"):
+        fail("LICENSE.md must contain the MIT-0 license")
+    if "beer" in license_text.lower():
+        fail("legacy Beer Clause remains in LICENSE.md")
 
 
 def check_placeholders() -> None:
@@ -228,6 +254,7 @@ def main() -> None:
     check_markdown_links()
     check_bilingual_contract()
     check_evals()
+    check_license()
     check_placeholders()
     markdown_count = sum(1 for _ in ROOT.rglob("*.md"))
     print(f"OK: grill-us repository is valid ({markdown_count} Markdown files checked)")
